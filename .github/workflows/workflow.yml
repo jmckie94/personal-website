@@ -4,7 +4,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch:
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -30,5 +29,4 @@ jobs:
           invalidation: /
           delete-removed: true
           no-cache: true
-          private: true
           filesToInclude: ".*/*,*/*,**"
