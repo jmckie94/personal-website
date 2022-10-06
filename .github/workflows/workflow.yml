@@ -17,13 +17,17 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy
-        uses: reggionick/s3-deploy@v3
+      - name: Deploy application to AWS S3 and invalidate cloudfront cache
+        uses: pukonu/action-deploy-webapp-aws@v.1.2.2
+        id: deploy
         with:
-          folder: build
-          bucket: ${{ secrets.AWS_S3_BUCKET }}
-          bucket-region: ${{ secrets.AWS_REGION }}
-          dist-id: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
-          invalidation: /
-          no-cache: true
-          filesToInclude: ".*/*,*/*,**"
+          build_path: './build'
+          bucket_name: ${{ secrets.AWS_S3_BUCKET }}
+          bucket_key: ''
+          distribution_invalidation_path: '/*'
+          empty_bucket: 'false'
+        env:
+          DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
